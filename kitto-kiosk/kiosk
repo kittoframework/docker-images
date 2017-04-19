@@ -1,0 +1,24 @@
+#!/bin/bash
+# set -euo pipefail
+set -x
+DASHBOARD_URL=${DASHBOARD_URL:-http://localhost:4000}
+
+Xorg &
+X_PID=$!
+
+echo "Waiting for X to be ready"
+export DISPLAY=:0
+
+# Wait for X to start and set the background
+while ! feh --bg-fill /etc/wallpaper.png; do sleep 1; done
+matchbox-window-manager -use_cursor no &
+
+# Wait for the dashboard to be up and running
+while ! curl -sf -o /dev/null "$DASHBOARD_URL"; do sleep 1; done
+
+xset -dpms
+xset s off
+xset s noblank
+
+echo "Starting iceweasel"
+iceweasel "$DASHBOARD_URL"
