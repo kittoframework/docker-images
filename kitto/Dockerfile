@@ -1,9 +1,9 @@
-FROM elixir:1.3-slim
+FROM elixir:1.4.5-slim
 MAINTAINER Dimitris Zorbas "dimitrisplusplus@gmail.com"
 
 RUN mix local.hex --force && mix local.rebar --force
 RUN apt-get update \
-  && apt-get -qq install curl xz-utils git make \
+  && apt-get -qq install curl xz-utils git make gpg \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
